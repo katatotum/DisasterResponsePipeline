@@ -27,6 +27,16 @@ import pickle
 
 
 def load_data(database_filepath):
+    """Return features, labels, and list of category names from sqlite table.
+    
+    Args:
+    database_filepath: string. The database filepath.
+    
+    Returns:
+    X: series. The "message" column to be used as the feature.
+    Y: array. The values from each category column to be used as labels.
+    categories: list. The category names.
+    """
     table_name = "messages_and_categories"
     engine = sqlalchemy.create_engine('sqlite:///' + database_filepath)
     df = pd.read_sql_table(table_name,engine)
@@ -37,6 +47,7 @@ def load_data(database_filepath):
 
 
 def tokenize(text):
+    """Return normalized, tokenized, and lemmatized text.""" 
     #normalize text
     text = re.sub(r"[^a-zA-Z0-9]", " ", text.lower())
     #tokenize text
@@ -45,13 +56,13 @@ def tokenize(text):
     words = [w for w in words if w not in stopwords.words("english")]
     # Reduce words to their root form
     lemmed = [WordNetLemmatizer().lemmatize(w) for w in words]
-    
     # Reduce words to their stems
     #stemmed = [PorterStemmer().stem(w) for w in words]
     return lemmed
 
 
 def build_model():
+    """Return multi output classifier model(not yet trained)."""
     clf = MultiOutputClassifier(RandomForestClassifier())
     pipeline = Pipeline([
                 ('vect', CountVectorizer(tokenizer=tokenize)),
@@ -68,6 +79,10 @@ def build_model():
 
 
 def evaluate_model(model, X_test, Y_test, category_names):
+    """Print evaluation of model.
+    
+    To be used after model has been fitted. Also returns label predictions and actual labels for testing purposes.
+    """
     Y_pred = model.predict(X_test)
     y_pred_df = pd.DataFrame(Y_pred)
     y_test_df = pd.DataFrame(Y_test)
@@ -78,11 +93,13 @@ def evaluate_model(model, X_test, Y_test, category_names):
 
 
 def save_model(model, model_filepath):
+    """Save model to pickle file."""
     # Save the trained model as a pickle string. 
     pickle.dump(model, open(model_filepath, "wb")) 
 
 
 def main():
+    """Take arguments from command line and run load_data(), train_test_split(),build_model(),model.fit(),evaluate_model(),save_model()"""
     if len(sys.argv) == 3:
         database_filepath, model_filepath = sys.argv[1:]
         print('Loading data...\n    DATABASE: {}'.format(database_filepath))
