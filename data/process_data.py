@@ -3,14 +3,15 @@ import pandas as pd
 from sqlalchemy import create_engine
 
 def load_data(messages_filepath, categories_filepath):
+    """Return merged dataframe from two csvs"""
     messages = pd.read_csv(messages_filepath)
     categories = pd.read_csv(categories_filepath)
-    # merge datasets
     df = messages.merge(categories,on="id",how="inner")
     return df
 
 
 def clean_data(df):
+    """Return transformed and cleaned dataframe."""
 #One hot encode categories column
     # create a dataframe of the 36 individual category columns
     categories_expanded = df['categories'].str.split(";",expand=True)
@@ -52,12 +53,14 @@ def clean_data(df):
     return df
 
 def save_data(df, database_filename):
+    """Save dataframe to sqlite database file"""
     table_name = 'messages_and_categories'
     engine = create_engine("sqlite:///" + database_filename)
     df.to_sql(table_name, engine, index=False, if_exists = "replace")
 
 
 def main():
+    """Take arguments from command line and run load_data(), clean_data(), save_data()"""
     if len(sys.argv) == 4:
 
         messages_filepath, categories_filepath, database_filepath = sys.argv[1:]
