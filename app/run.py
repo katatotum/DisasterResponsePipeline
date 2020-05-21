@@ -15,6 +15,7 @@ from sqlalchemy import create_engine
 app = Flask(__name__)
 
 def tokenize(text):
+    """Return tokenized text."""
     tokens = word_tokenize(text)
     lemmatizer = WordNetLemmatizer()
 
@@ -33,13 +34,12 @@ df = pd.read_sql_table("messages_and_categories", engine)
 model = joblib.load("../models/classifier.pkl")
 
 
-# index webpage displays cool visuals and receives user input text for model
+# index webpage displays visuals and receives user input text for model
 @app.route('/')
 @app.route('/index')
 def index():
     
     # extract data needed for visuals
-    # TODO: Below is an example - modify to extract data for your own visuals
     genre_counts = df.groupby('genre').count()['message']
     genre_names = list(genre_counts.index)
     df.columns = df.columns.str.upper().str.replace('_', ' ')
@@ -50,7 +50,6 @@ def index():
         category_sums.append(df[category_name].sum())
     
     # create visuals
-    # TODO: Below is an example - modify to create your own visuals
     graphs = [
         {
             'data': [
@@ -108,7 +107,7 @@ def go():
     classification_labels = model.predict([query])[0]
     classification_results = dict(zip(df.columns[4:], classification_labels))
 
-    # This will render the go.html Please see that file. 
+    #Render the go.html file
     return render_template(
         'go.html',
         query=query,
@@ -117,6 +116,7 @@ def go():
 
 
 def main():
+    """Run app on port 3001."""
     app.run(host='0.0.0.0', port=3001, debug=True)
 
 
