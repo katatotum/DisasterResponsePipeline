@@ -5,11 +5,9 @@ Python 3.x
 Libraries: numpy, pandas, sqlalchemy, nltk, re, sklearn, pickle, json, plotly, flask
 
 ## Project Motivation
-To analyze disaster data from Figure Eight to build a model for an API that classifies disaster messages.   
+The analysis uses a data set containing real tweets and texts that were sent during disaster events. I created a machine learning pipeline to categorize these events so that the messages can be sent to an appropriate disaster relief agency.    
 
-The analysis uses a data set containing real messages that were sent during disaster events. I create a machine learning pipeline to categorize these events so that you the messages can be sent to an appropriate disaster relief agency.    
-
-The project also includes a web app where an emergency worker can input a new message and get classification results in several categories. The web app will also display visualizations of the data.
+The project also includes a web app where a user can input a new message and get classification results in all of the possible categories. The web app will also display visualizations of the data. This provides a way for emergency workers to see how the model is working for individual messages, but in practice, this would not be efficient during an actual disaster and instead the model would be run on many messages simultanouesly and perhaps even automatically forwarding messages to the proper agency based on the category.
 
 ## File Descriptions
 <b>data/disaster_messages.csv</b>:  original dataset with columns for message id, message, original message, and genre.   
