@@ -5,7 +5,7 @@ Python 3.x
 Libraries: numpy, pandas, sqlalchemy, nltk, re, sklearn, pickle, json, plotly, flask
 
 ## Project Motivation
-The analysis uses a data set containing real tweets and texts that were sent during disaster events. I created a machine learning pipeline to categorize these events so that the messages can be sent to an appropriate disaster relief agency.    
+Using a dataset of real tweets and texts that were sent during disaster events, I created a machine learning pipeline (multioutput classifier) to categorize the messages so that the messages can be funneled to the appropriate disaster relief agency.
 
 The project also includes a web app where a user can input a new message and get classification results in all of the possible categories. The web app will also display visualizations of the data. This provides a way for emergency workers to see how the model is working for individual messages, but in practice, this would not be efficient during an actual disaster and instead the model would be run on many messages simultanouesly and perhaps even automatically forward messages to the proper agency based on the category.
 
